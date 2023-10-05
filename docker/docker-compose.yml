@@ -1,0 +1,45 @@
+version: '3.7'
+
+services:
+  db:
+    container_name: pr-db
+    image: postgres:13-alpine3.18
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+
+  backend:
+    container_name: pr-backend
+    # этот образ мы сбилдили в make build
+    image: products-backend:latest
+    # место где будут исполняться команды
+    working_dir: /project/server
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./../.:/project
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  frontend:
+    container_name: pr-frontend
+    image: node:lts-alpine
+    working_dir: /project
+    entrypoint: /bin/sh
+    ports:
+      - "8080:5173"
+    volumes:
+      - type: bind
+        source: ./../frontend/
+        target: /project
+    tty: true
+
+
+volumes:
+  pg_data:
