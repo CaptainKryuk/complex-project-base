@@ -1,9 +1,6 @@
 build: ;
-	docker build -f docker/backend.dockerfile -t products-backend:latest .
-	cd frontend && npm install
-
-#build-frontend: ;
-#	docker build -f docker/frontend.dockerfile -t products-frontend:latest .
+	make down
+	docker build -f docker/backend.dockerfile --no-cache -t products-backend:latest .
 
 up: ;
 	docker-compose -f docker/docker-compose.yml -p products up -d --build
@@ -14,6 +11,12 @@ down: ;
 
 delete: ;
 	docker-compose -f docker/docker-compose.yml -p products down -t 0 -v
+
+sh:
+	docker exec -it pr-backend ./manage.py shell_plus
+
+enter: ;
+	docker exec -it pr-backend /bin/bash
 
 
 # Proxy django manage.py commands

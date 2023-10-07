@@ -9,6 +9,7 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /project
 
 COPY ./requirements/requirements.txt .
+RUN pwd
 RUN pip install -r requirements.txt
 
 # копирование всего проекта внутрь контейнера, то есть возьмется все с уровня Makefile и положится в папку
