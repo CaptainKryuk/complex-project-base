@@ -8,7 +8,7 @@ ENV PYTHONUNBUFFERED 1
 # папка, в которой будет лежать весь проект, то есть и docker и server итд
 WORKDIR /project
 
-COPY ./requirements/requirements.txt .
+COPY ./requirements/requirements.txt requirements.txt
 RUN pwd
 RUN pip install -r requirements.txt
 
