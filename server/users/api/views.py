@@ -8,6 +8,7 @@ from common.api import DefaultApiView
 from .serializers import UserCreateSerializer, UserLoginSerializer
 from users.models import User
 from common.views import SessionCsrfExemptAuthentication
+from communication.tasks import send_email
 
 
 class RegistrationView(APIView):
@@ -19,6 +20,7 @@ class RegistrationView(APIView):
         if serializer.is_valid():
             user = User.objects.create_user(**serializer.data)
             refresh = RefreshToken.for_user(user)
+            send_email.delay(user.id)
             return Response({
                 'refresh': str(refresh),
                 'access': str(refresh.access_token)  # type: ignore
