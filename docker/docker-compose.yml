@@ -40,6 +40,38 @@ services:
         target: /project
     tty: true
 
+  redis:
+    image: redis:7.0.5-alpine
+    hostname: redis
+
+  celery:
+    container_name: celery
+    image: products-backend:latest
+    working_dir: /project/server
+    entrypoint: celery
+    command: -A config.celery.app worker --loglevel=info
+    volumes:
+      - ./../.:/project
+    links:
+      - redis
+    depends_on:
+      - redis
+
+  celery-flower:
+    container_name: celery-flower
+    image: products-backend:latest
+    working_dir: /project/server
+    entrypoint: celery
+    command: -A config.celery.app flower
+    volumes:
+      - ./../.:/project
+    links:
+      - redis
+    depends_on:
+      - redis
+    ports:
+      - "5555:5555"
+
 
 volumes:
   pg_data:

@@ -53,6 +53,7 @@ INSTALLED_APPS = [
 
 CUSTOM_APPS = [
     'users',
+    'communication',
 ]
 
 INSTALLED_APPS += CUSTOM_APPS
@@ -162,3 +163,5 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     'UPDATE_LAST_LOGIN': True,
 }
+
+CELERY_BROKER_URL = 'redis://redis:6379/0'
