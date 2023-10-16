@@ -49,11 +49,13 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
     'corsheaders',
+    'graphene_django',
 ]
 
 CUSTOM_APPS = [
     'users',
     'communication',
+    'products',
 ]
 
 INSTALLED_APPS += CUSTOM_APPS
